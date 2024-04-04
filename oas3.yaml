@@ -1,0 +1,1006 @@
+openapi: 3.0.0
+info:
+  version: '2.0'
+  title: "MoneyGenius OpenAPI 3.0"
+  description: API for managing personal finance and sharing common expenses.
+  license:
+    name: MIT
+servers:
+  - url: http://localhost:8000/api/v1
+    description: Development server
+    
+paths:
+  /authentications/login:
+    post:
+      summary: Authenticate an existing user
+      description: Use the input parameters to authenticate an existing user.   
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: "user's email"
+                  example: "marco@unitn.it"
+                password:
+                  type: string
+                  description: "user's password"
+                  example: "123"
+      responses:
+        '200':
+          description: The logged user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  email:
+                    type: string
+                    description: Registration mail of the user
+                    example: marco@unit.it
+                  name:
+                    type: string
+                    description: Registration name of the user
+                    example: marco
+                  id: 
+                    type: string
+                    description: Id associated with the user
+                    example: marco's_id
+                  success:
+                    type: boolean
+                    description: Result of the authentication process
+                    example: true
+                  token:
+                    type: string
+                    example: eyJzdwIiOiIxMiMONTY30DkwIiwibmFtZSI6IkDvaG4
+                    description: User's authentication token
+                  message:
+                    type: string
+                    description: A message for the user
+                    example: Enjoy your token! 
+                  self: 
+                    type: string
+                    description: Reference to the logged user
+                    example: users/628a2d2415fde6981acaf117
+        '400':
+          description: Invalid parameters 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Result of the authentication process
+                    example: false
+                  message:
+                    type: string
+                    description: Error message
+                    example: Autenticazione fallita, email o password non validi
+
+  /authentications/signup:
+    post:
+      summary: Register a new user
+      description: Use the input parameters to register a new user.    
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: user's email
+                  example: "marco@unitn.it"
+                name:
+                  type: string
+                  description: user's name
+                  example: "Marco"
+                password:
+                  type: string
+                  description: user's password
+                  example: "123"
+      responses:
+        '200':
+          description: The logged user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  email:
+                    type: string
+                    description: Registration mail of the new user
+                    example: marco@unit.it
+                  name:
+                    type: string
+                    description: Registration name of the new user
+                    example: marco
+                  id: 
+                    type: string
+                    description: Id associated with the new user
+                    example: 628a2d2415fde6981acaf117
+                  success:
+                    type: boolean
+                    description: Result of the registration process
+                    example: true
+                  token:
+                    type: string
+                    description: User's authentication token
+                    example: eyJzdwIiOiIxMiMONTY30DkwIiwibmFtZSI6IkDvaG4
+                  message:
+                    type: string
+                    description: A message for the user
+                    example: Enjoy your token! 
+                  self: 
+                    type: string
+                    description: Reference to the new user
+                    example: users/628a2d2415fde6981acaf117
+        '400':
+          description: Invalid parameters 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Result of the registration process
+                    example: false
+                  message:
+                    type: string
+                    description: Error message
+                    example: Registrazione fallita, email o password non validi
+                    
+  /users/{id}/budget:
+    post:
+      summary: Set the budget
+      description: Use the input parameter to set the budget.    
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                budget:
+                  type: number
+                  description: Budget set by the user
+                  example: 300
+                id: 
+                  type: string
+                  description: Id associated with the new user
+                  example: 628a2d2415fde6981acaf117
+                token:
+                  type: string
+                  description: User's authentication token
+                  example: eyJzdwIiOiIxMiMONTY30DkwIiwibmFtZSI6IkDvaG4
+      responses:
+        '201':
+          description: Budget set correctly
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Result of the budget setting process
+                    example: true
+        '400':
+          description: Invalid parameters 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Result of the budget setting process
+                    example: false
+                  message:
+                    type: string
+                    description: Error message
+                    example: Input non valido
+                    
+  /users/{id}/budget:
+    get:
+      summary: Show the budget
+      description: Show the total spent at the moment and the budget available to be spent.    
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: User's id
+          name: token
+          required: true
+          schema: 
+            type: string
+          description: User's authentication token
+      responses:
+        '200':
+          description: Budget spent and budget remaining correctly shown.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Result of budget shown
+                    example: true
+                  total_spent:
+                    type: number
+                    description: How much of the budget is already allocated to expenses
+                    example: 0
+                  budget:
+                    type: number
+                    description: Budget still to be spent 
+                    example: 300
+                    
+  /users/{id}/categories:
+    post:
+      summary: Create a new category
+      description: Use the input parameters to create a new category.    
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                    type: string
+                    description: User's authentication token
+                    example: "eyJzdwIiOiIxMiMONTY30DkwIiwibmFtZSI6IkDvaG4"
+                id:
+                  type: string
+                  description: User's id
+                  example: "628a2d2415fde6981acaf117"
+                name:
+                  type: string
+                  description: Name of the new category
+                  example: "Spesa"
+                color:
+                  type: string
+                  description: Color of the new category
+                  example: "#919191"
+                budget:
+                  type: integer
+                  description: Budget of the new category
+                  example: 200
+      responses:
+        '201':
+          description: Creation successful, location in the URL of the request 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Result of the operation
+                    example: true
+                  message:
+                    type: string
+                    description: A message for the user
+                    example: Categoria creata correttamente! 
+                  self: 
+                    type: string
+                    description: Reference to the new category
+                    example: users/628a2d2415fde6981acaf117/categories/628a2d2415fde6981acaf11d
+        '400':
+          description: Invalid parameters 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Result of the operation
+                    example: false
+                  message:
+                    type: string
+                    description: Error message
+                    example: "Creazione fallita, parametri mancanti"
+                    
+  /users/{id}/categories/default:
+    post:
+      summary: Create the default category
+      description: If not already present, create the default category.    
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                    type: string
+                    description: User's authentication token
+                    example: "eyJzdwIiOiIxMiMONTY30DkwIiwibmFtZSI6IkDvaG4"
+                id:
+                  type: string
+                  description: User's id
+                  example: "628a2d2415fde6981acaf117"
+      responses:
+        '201':
+          description: Creation successful, location in the URL of the request 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Result of the operation
+                    example: true
+                  message:
+                    type: string
+                    description: A message for the user
+                    example: Categoria creata correttamente! 
+                  self: 
+                    type: string
+                    description: Reference to the new category
+                    example: sutdents/628a2d2415fde6981acaf117/categories/628a2d2415fde6981acaf11d
+  
+  /users/{id}/categories:
+    delete:
+      summary: Delete an existent category
+      description: Use the input parameters to delete an existent category.    
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                    type: string
+                    description: User's authentication token
+                    example: "eyJzdwIiOiIxMiMONTY30DkwIiwibmFtZSI6IkDvaG4"
+                id:
+                  type: string
+                  description: User's id
+                  example: "628a2d2415fde6981acaf117"
+                name:
+                  type: string
+                  description: Category name
+                  example: "Spesa"
+      responses:
+        '204':
+          description: Successfully deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Result of the operation
+                    example: true
+                  message:
+                    type: string
+                    description: A message for the user
+                    example: Categoria rimossa correttamente! 
+        '404':
+          description: Category not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Result of the operation
+                    example: false
+                  message:
+                    type: string
+                    description: Error message
+                    example: "Cancellazione fallita, categoria non trovata"
+                    
+  /users/{id}/categories:
+    get:
+      summary: List of categories
+      description: Show the list of existing categories.   
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: User's id
+          name: token
+          required: true
+          schema: 
+            type: string
+          description: User's authentication token
+      responses:
+        '200':
+          description: All the categories are shown correctly.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Result of list shown
+                    example: true
+                  categories:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Category'
+
+  /users/{id}/expenses:
+    post:
+      summary: Create a new expense
+      description: Use the input parameters to create a new expense.    
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  description: User's authentication token
+                  example: "eyJzdwIiOiIxMiMONTY30DkwIiwibmFtZSI6IkDvaG4"
+                name:
+                  type: string
+                  description: Name of the new expense
+                  example: "Pizza"
+                amount:
+                  type: number
+                  description: Amount of the new expense
+                  example: 12
+                categoryId:
+                  type: string
+                  description: Category's id of the new expense
+                  example: "628a20fe6b7d93a608dc0fdc"
+                date:
+                  type: string
+                  description: Date of the new expense
+                  example: "2022-05-19"
+
+      responses:
+        '201':
+          description: Expense created. Link in the Location header.
+          headers:
+            location:
+              type: string
+                
+            
+              
+        '400':
+          description: Invalid parameters passed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Result of the operation
+                    example: false
+                  message:
+                    type: string
+                    description: Error message
+                    example: "Creazione fallita, input non validi."
+
+    get:
+      summary: List of expenses
+      description: Show the list of existing expenses.
+      parameters:
+        - in: path
+          name: token
+          required: true
+          schema: 
+            type: string
+          description: User's authentication token
+      responses:
+        '200':
+          description: All the expenses are shown correctly.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Result of the operation
+                    example: true
+                  message:
+                    type: string
+                    description: A message for the user
+                    example: "'Ecco le tue spese."
+                  expenses:
+                    type: array
+                    description: Array with all the expenses objects
+                    items:
+                      $ref: '#/components/schemas/Expense'
+        '404':
+          description: Invalid parameters passed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Result of the operation
+                    example: false
+                  message:
+                    type: string
+                    description: Error message
+                    example: "Categoria non esistente."
+                  
+  /users/{id}/expenses/{id}:
+    get:
+      summary: Show an expense
+      description:  Use the route parameters to show an existent expense of a user.
+      parameters:
+        - in: query
+          name: token
+          required: true
+          schema: 
+            type: string
+          description: User's authentication token
+      responses:
+        '200':
+          description: 'The expense is shown correctly.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Result of the operation
+                    example: true
+                  message:
+                    type: string
+                    description: A message for the user
+                    example: 'Ecco la spesa.'
+                  expense:
+                    type: object
+                    description: The expense object
+                    example:
+                      $ref: '#/components/schemas/Expense'
+        
+        '400':
+          description: Invalid parameters passed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Result of the operation
+                    example: false
+                  message:
+                    type: string
+                    description: Error message
+                    example: "Utente non riconosciuto."
+                
+
+    delete:
+      summary: Delete an expense
+      description: Use the route parameters to delete an existent expense of a user.    
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                    type: string
+                    description: User's authentication token
+                    example: "eyJzdwIiOiIxMiMONTY30DkwIiwibmFtZSI6IkDvaG4"
+      responses:
+        '204':
+          description: The resource was deleted successfully.
+        '400':
+          description: Invalid parameters passed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Result of the operation
+                    example: false
+                  message:
+                    type: string
+                    description: Error message
+                    example: "Cancellazione fallita, spesa non esistente."
+  /groups:
+    post:
+      summary: Create a group of users
+      description: Create a group where it is possible to invite other users willing to share their common expenses.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                    type: string
+                    description: User's authentication token
+                    example: "eyJzdwIiOiIxMiMONTY30DkwIiwibmFtZSI6IkDvaG4"
+                id: 
+                    type: string
+                    description: User id
+                    example: "628a2d2415fde6981acaf117"
+                    
+                name:
+                  type: string
+                  description: Group's name
+                  example: "Appartamento"
+      responses:
+        '201':
+          description: Group succesfully created
+          headers:
+            Location:
+              schema:
+                type: string
+                example: group/62925047c9878bc1d8c1ea3e
+                description: Link to the newly created expense.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Result of the operation
+                    example: true
+                  message:
+                    type: string
+                    description: Success message
+                    example: "Gruppo creato con successo."
+                  group_token:
+                    type: string
+                    description: Authorization token associated with the newly created group
+                    example: "eyJzdwIiOiIxMiMONTY30DkwIiwibmFtZSI6IkDvaG4"
+                  group_id:
+                    type: string
+                    description: id associated with the new group
+                    example: ""
+        '400':
+          description: A generic error message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Result of the operation
+                    example: false
+                  message:
+                    type: string
+                    description: Error message
+                    example: "Errore, parametri mancanti."
+                
+              
+  /groups/{id}:      
+    get:
+      summary: Get a specific group
+      description: Show all the information of the specified group.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: Id of the specific group
+        - in: query
+          name: token
+          required: true
+          schema: 
+            type: string
+            example: "eyJzdwIiOiIxMiMONTY30DkwIiwibmFtZSI6IkDvaG4"
+          description: User's authentication token
+        - in: query
+          name: group_token
+          required: true
+          schema: 
+            type: string
+            example: "eyJzdwIiOiIxMiMONTY30DkwIiwibmFtZSI6IkDvaG4"
+          description: Access token of the specific group
+      responses:
+        '200':
+          description: The group is successfully returned.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Result of the operation
+                    example: true
+                  group:
+                    type: object
+                    description: object representing the group
+                    items:
+                      $ref: '#/components/schemas/Group'
+        '403':
+          description: User is not authorized to access the group.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Result of the operation
+                    example: true
+                  message:
+                    type: string
+                    description: Error message
+                    example: "Errore, autorizzazione group token fallita."
+                    
+  /groups/{id}/invitations:
+    post:
+      summary: Invite new partecipants
+      description: Invite new partecipants to the group specified in the request
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: 
+            type: string
+          description: Id of the specific group
+        - in: query
+          name: token
+          required: true
+          schema: 
+            type: string
+            example: "eyJzdwIiOiIxMiMONTY30DkwIiwibmFtZSI6IkDvaG4"
+          description: User's authentication token
+        - in: query 
+          name: group_token
+          required: true
+          schema: 
+            type: string
+            example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+          description: Access token of the specific group
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id: 
+                    type: string
+                    description: User id
+                    example: "628a2d2415fde6981acaf117"
+                    
+                invitedUser:
+                  type: string
+                  description: Mail of the new partecipant
+                  example: "mario.rossi@gmail.com"
+      responses:
+        '201':
+          description: User succesfully invited
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Result of the operation
+                    example: true
+                  message:
+                    type: string
+                    description: Success message
+                    example: "Utente invitato con successo."
+        
+        '401':
+          description: No token provided
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Result of the operation
+                    example: false
+                  message:
+                    type: string
+                    description: Error message
+                    example: "No group token provided."
+
+        
+        '403':
+          description: Cannot authenticate token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Result of the operation
+                    example: false
+                  message:
+                    type: string
+                    description: Error message
+                    example: "Failed to authenticate group token."
+
+        
+        '400':
+          description: A generic error message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Result of the operation
+                    example: false
+                  message:
+                    type: string
+                    description: Error message
+                    example: "Errore, l'utente invitato fa già parte di un gruppo."
+
+    
+    put:
+      summary: Accept the invitation
+      description: Accept the invitation to join a specific group
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: 
+            type: string
+          description: Id of the specific group
+        - in: query
+          name: token
+          required: true
+          schema: 
+            type: string
+            example: "eyJzdwIiOiIxMiMONTY30DkwIiwibmFtZSI6IkDvaG4"
+          description: User's authentication token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id: 
+                    type: string
+                    description: User id
+                    example: "628a2d2415fde6981acaf117"
+                    
+      responses:
+        '200':
+          description: Invite accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Result of the operation
+                    example: true
+                  message:
+                    type: string
+                    description: Success message
+                    example: "Ti sei unito al gruppo con successo."
+                  group_token:
+                    type: string
+                    description: authorization token for accessing the joined group
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+                    
+        '400':
+          description: A generic error message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Result of the operation
+                    example: false
+                  message:
+                    type: string
+                    description: Success message
+                    example: "Errore, impossibile partecipare a più di un gruppo."
+components:
+  schemas:
+    Category:
+      type: object
+      required:
+        - id
+        - name
+        - color
+        - budget
+        - cat_spent
+      properties:
+        id:
+          type: string
+          description: id of the category
+          example: 628a2d2415fde6981acaf11d
+        name:
+          type: string
+          description: name of the category
+          example: spesa
+        color:
+          type: string
+          description: color assigned to the category
+          example: "#919191"
+        budget: 
+          type: number
+          description: budget assigned to the category
+          example: 200
+        cat_spent:
+          type: number
+          description: how much the user already spent in that category
+          example: 100
+  
+    Expense:
+      type: object
+      required:
+        - _id
+        - name
+        - categoryId
+        - amount
+        - date
+      properties:
+        _id:
+          type: string
+          description: id of the expense
+          example: "628ab8d7f10846b3fa633a46"
+        name:
+          type: string
+          description: name of the expense
+          example: "Pizza"
+        categoryId:
+          type: string
+          description: name of the category of the expense
+          example: "628a2d2415fde6981acaf11d"
+        amount: 
+          type: number
+          description: amount of the expense
+          example: 12
+        date:
+          type: string
+          description: date of the expense
+          example: "2022-05-18T00:00:00.000+00:00"
+    
+    Group:
+      type: object
+      required:
+        - _id
+        - name
+        - partecipants
+      properties:
+        _id:
+          type: string
+          description: id of the Group
+          example: "628ab8d7f10846b3fa633a46"
+        name:
+          type: string
+          description: name of the group
+          example: "Appartamento"
+        partecipants:
+          type: array
+          description: ids of the users partecipating to the group
+          example: ["6299f530d982e9fc2251e47c", "6299f576d982e9fc2251e48f"]
+        credits: 
+          type: array
+          description: list of all the debitors of a common expense
+        debits:
+          type: array
+          description: List of all the creditors of a common expense

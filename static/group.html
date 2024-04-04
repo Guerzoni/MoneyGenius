@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <!-- div containing the group infos  -->
+    <div class="container pt-4 card" id="groupInfo">
+        <h3>Info Gruppo</h3>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-4">Nome:</dt>
+                <dd id ="gi_name" class="col-8"></dd>
+                <dt class="col-4">Partecipanti:</dt>
+                <dd id ="gi_participants" class="col-8">
+                    <ul id="ulParticipants" class="list-group">
+
+                    </ul>
+                </dd>
+            </dl>
+
+            <!-- Button to Open the Modal -->
+            <button id="btnOpenInvite" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mdlInvite">Invita Partecipante</button>
+        
+            <!-- The Modal -->
+            <div id="mdlInvite" class="modal">
+            <!-- Modal dialog -->
+            <div class="modal-dialog">
+                <!-- Modal content -->
+                <div class="modal-content">
+                    
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Invita Partecipante</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            <form method="post" name="inviteForm" id="inviteForm">
+                                <div class="form-group">
+                                    <label for="inviteMail">Email:</label>
+                                    <input type="email" name="inviteMail" class="form-control"  id="inviteMail" required>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-6 text-start">
+                                        <button type="button" class="btn btn-primary" id="btnInvite"  onclick="inviteParticipant();">Invita</button>
+                                    </div>
+                                    <div class="col-6 text-end">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnCloseInviteModal">Chiudi</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>     
+
+                </div>
+            </div>
+
+            </div>
+            
+        </div>
+    </div>
+</html>

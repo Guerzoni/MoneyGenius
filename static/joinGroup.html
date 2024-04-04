@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+    <div class="alert alert-info text-center">
+        <strong>Info!</strong> Non fai ancora parte di nessun gruppo.
+    </div>
+
+    <!-- div containing the group infos  -->
+    <div class="row">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    <p class="card-text">Clicca qui per creare un gruppo</p>
+                    <!-- Button to Open the Modal -->
+                    <button id="btnOpenCreateGroup" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mdlCreateGroup">Crea Gruppo</button>
+            
+                    <!-- The Modal -->
+                    <div id="mdlCreateGroup" class="modal">
+                    
+                        <!-- Modal dialog -->
+                        <div class="modal-dialog">
+                            <!-- Modal content -->
+                            <div class="modal-content">
+                        
+                                <!-- Modal Header -->
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Crea gruppo</h4>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+        
+                                <!-- Modal body -->
+                                <div class="modal-body">
+                                    <form method="post" name="createGroupForm" id="createGroupForm">
+                                        <div class="form-group">
+                                            <label for="createGroupName">Nome:</label>
+                                            <input type="text" name="createGroupName" class="form-control"  id="createGroupName" required>
+                                        </div>
+                                    </form>
+                                </div>
+        
+                                <!-- Modal footer -->
+                                <div class="modal-footer">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-6 text-start">
+                                                <button type="button" class="btn btn-primary" id="btnCreateGroup"  onclick="addGroup();">Crea</button>
+                                            </div>
+                                            <div class="col-6 text-end">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnCloseCreateGroupModal">Chiudi</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+        
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body" id="requestsList">
+                    <p class="card-text">Inviti ricevuti</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</html>

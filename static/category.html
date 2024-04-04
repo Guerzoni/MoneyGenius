@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    
+    <h3 class="pb-3">Le tue categorie</h3>
+    <!-- div containing a list of all the expenses of the current month  -->
+    <div id="categoriesList">
+    </div>
+
+    <!-- Button to Open the Modal -->
+    <button id="btnOpenFormCategory" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mdlCategory">Aggiungi Categoria</button>
+
+    <!-- The Modal -->
+    <div id="mdlCategory" class="modal">
+        <!-- Modal dialog -->
+        <div class="modal-dialog">
+            <!-- Modal content -->
+            <div class="modal-content">
+                
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Registra Categoria</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <form method="post" name="categoryForm" id="categoryForm"> 
+                            <div class="form-group">
+                                <label for="categoryName">Nome:</label>
+                                <input type="text" name="categoryName" class="form-control"  id="categoryName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="categoryColor">Colore:</label>
+                                <input type="color" name="categoryColor" class="form-control form-control-color"  id="categoryColor" required>
+                            </div>   
+                            <div class="form-group">
+                                <label for="categoryBudget">Budget:</label>
+                                <input type="number" name="categoryBudget" class="form-control"  id="categoryBudget" required>
+                            </div>                            
+                            <br>
+                            <input type="button" class="btn btn-primary" value="Conferma" id="btnAddCategory" onclick="addCategory();">
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="btnCloseCategoryModal">Close</button>
+                    </div>     
+
+            </div>
+        </div>
+    </div>
+    
+</html>

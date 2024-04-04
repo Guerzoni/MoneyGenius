@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <form method="post" action="/api/v1/users/:id/budget" id="budgetform">
+        <label> Imposta Budget </label>
+        <input name="budget" id="budget"/>
+        <input type="button" value="Imposta" onclick="setBudget()"/>
+    </form>
+    <!--
+    <form method="put" action="api/v1/users/modifyBudget" id="modifybudgetform" hidden="true">
+        <label> Modifica Budget </label>
+        <input name="budget" id="budget"/>
+        <input type="button" value="Modifica", onclick="modifyBudget()"/>
+    </form>
+-->
+    <hr>
+
+    <div class="row text-center">
+        <div class="col-6">
+            <strong>Budget Speso</strong>
+        </div>
+        <div class="col-6" id="labelBudRim" hidden="true">
+            <strong>Budget Rimanente</strong>
+        </div>
+    </div>    
+    
+    <div class="row text-center">
+        <div class="col-6">
+            <span id="budgetSpentView"></span>
+        </div>
+        <div id="budgetRimanente" class="col-6" hidden="true" >
+            <span id="budget2View"></span>
+        </div>
+    </div>
+
+</html>
